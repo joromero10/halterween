@@ -1,18 +1,20 @@
 import streamlit as st 
 
+
 # title of the screen
 st.set_page_config(page_title= "AI Stylist",
                    page_icon= "👗",
                    layout= "wide")
 st.title("👗Halterween")
 st.caption("Need ideas for a halloween costume? Type in your vision and I will send you recommendations based on your budget, wardrobe, & avalible time")
+# Custom Styles 
+
 
 # input section
 
 with st.form("costume_form"):
-    st.subheader("Choose your ideas 🗩 ")
+    st.header("Choose your ideas 🗩 ")
     idea = st.text_area("Describe your idea", placeholder= "eg. I have a black shirt and brown pants. that will not take me too much time putting together ")
-    location = st.text_input("📍 Location")
     col1, col2 = st.columns(2)
 
     with col1:
@@ -21,7 +23,51 @@ with st.form("costume_form"):
     with col2: 
          style = st.selectbox("🪄Preferred Style", ["Scary", "Funny", "Classic Halloween", "Unique"])
 
+    st.divider()
+    st.subheader("🛍️ Costume Supply Finder")
+
+    use_store_finder = st.checkbox(
+    "Help me find costume supplies at nearby stores"
+    )
+
+    location = ""
+    preferred_stores = []
+    search_radius = 10
+
+    if use_store_finder:
+        location = st.text_input(
+            "📍 Enter your city, ZIP code, or address",
+            placeholder="Example: Rochester Hills, MI"
+        )
+
+    preferred_stores = st.multiselect(
+        "Which stores do you prefer?",
+        [
+            "Walmart",
+            "Target",
+            "Michaels",
+            "Joann",
+            "Dollar Tree",
+            "Spirit Halloween",
+            "Five Below",
+            "Party City"
+        ]
+    )
+
+    search_radius = st.slider(
+        "Maximum search distance (miles)",
+        min_value=1,
+        max_value=50,
+        value=10
+    )
+
+
+
+
+
+
     submitted = st.form_submit_button(label="Submit", help="Generate Your Costume")
+
 
 # once it's submitted
 
@@ -32,8 +78,15 @@ if submitted:
     else:
         st.success("🤓 Generating you ideal Costume....")
         st.write("My idea:", idea)
-        st.write("Location:", location)
         st.write("Budget:", budget)
         st.write("Style:", style)
+        
 
-      
+
+
+# footer 
+
+footer = st.container()
+with footer:
+     st.divider()
+     st.write("© Madhumitha Anand & Joannie Texta Romero 2026 | Hacktoberfest | Built with Streamlit")
